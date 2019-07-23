@@ -4,6 +4,7 @@ var port = process.env.PORT || 8000;
 var bodyParser = require('body-parser');
 var configDb = require('./config/db');
 const mongoose = require('mongoose');
+var multer = require('multer');
 
 // ****** Product Routes****** 
 const productRoute = require('./routes/product/productRoutes')
@@ -23,7 +24,27 @@ mongoose.connect(configDb.url, {
 });
 
 app.use(bodyParser.json()); // get information from html forms
-  app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: true }));
+
+//*** uploading file/image *****/
+var upload = multer({ storage: storage })
+
+var storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+        cb(null, './public');
+     },
+    filename: function (req, file, cb) {
+        cb(null , download.jpg);
+    }
+});
+  
+  app.post('/single', upload.single('profile'), (req, res) => {
+    try {
+      res.send(req.file);
+    }catch(err) {
+      res.send(400);
+    }
+  });
 
 //   app.use(function(err, req, res, next) {
 //     res.status(err.status || 500);
