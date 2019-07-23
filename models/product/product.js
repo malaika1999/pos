@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 var productSchema = new mongoose.Schema({
 
     productId: {
@@ -35,13 +36,13 @@ var productSchema = new mongoose.Schema({
     },
     isRestricted: {
         type: Boolean,
+    },
+    image: {
+        type: String,
+        default: 'https://via.placeholder.com/200'
     }
-    // image: {
-    //     type: String,
-    //     default: 'https://via.placeholder.com/200'
-    // }
     
 })
-module.exports = mongoose.model(
-    'product', productSchema, 'products'
-)
+
+mongoose.model('products', productSchema);
+module.exports = mongoose.model('products');

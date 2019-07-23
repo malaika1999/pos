@@ -1,25 +1,22 @@
-const mongoose = require("mongoose");
-const product = require('../../../models/product/product');
+const Product = require('../../../models/product/product.js');
 
-const deleteOne = async(req,res) => {
-    let deletedProduct = await product.findByIdAndDelete({
-        _id: req.params.pId
-    })
-
-    if(!deletedProduct){
-        return res.status(404).send({
-            status: false,
-            message: "no product found against ID" + req.params.pId
-        })
-    }else{
-        return res.send({
-            status:true,
-            message: "product deleted",
-            data: deletedProduct
-
-        })
-    }
-}
-module.exports = {
-    deleteOne
+exports.deleteProduct = (req, res) => {
+    Product.findByIdAndRemove(req.params.pId)
+    .then(product => {
+        if(!product){
+            return res.status(404).send({
+                message:"product not found with id " + req.params.pId
+            })
+        }
+        res.send({message: "product deleted successfully!"});
+    }).catch(err => {
+        if(err.kind === 'ObjectId' || err.name === 'NotFound') {
+            return res.status(404).send({
+                message: "product not found with id " + req.params.pId
+            });                
+        }
+        return res.status(500).send({
+            message: "Could not delete product with id " + req.params.pId
+        });
+    });
 }

@@ -10,7 +10,7 @@ const deleteOneController = require('../../controllers/product/productController
 router.post('/create', createController.createProduct);
 router.get('/getall/', getAllController.allProducts);
 router.get('/getone/:pId', getOneController.oneProduct);
-router.put('/updateproduct/:pId', updateOneController.updateProduct);
-router.delete('/deleteproduct/:pId', deleteOneController.deleteProduct);
+router.put('/update/:pId', updateOneController.updateProduct);
+router.delete('/delete/:pId', deleteOneController.deleteProduct);
 
 module.exports=router;

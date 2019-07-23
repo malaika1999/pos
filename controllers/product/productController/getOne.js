@@ -1,31 +1,21 @@
-const product = require('../../../models/product/product');
+const Product = require('../../../models/product/product.js');
 
-const oneProduct = async(req,res)=> {
-    let product = await product.findById({
-        _id: req.params.pId
-    }).catch(
-        (err)=> {
-            if(err) {
-                res.status(500).json(err);
-                return
-            }
+exports.oneProduct =  (req, res) => {
+    Product.findById(req.params.pId)
+    .then(product => {
+        if(!product){
+            return res.status(404).send({
+                message:"product not found with id"+ req.params.pId
+            })
         }
-    )
-if(!product) {
-    return res.status(404).send({
-        status: false,
-        message: "Product not found against ID " + req.params.pID
+        res.send(product);
     })
-}
-else {
-    return res.send({
-        status: true,
-        message: "Product found successfully",
-        data: product
+    .catch(err => {
+        if(err.kind == "ObjectId"){
+            return res.status(404).send({
+                message: "product not found with id " + req.params.pId
+              });
+        }
+        return res.status(500).send({message: "error"});
     })
-}
-}
-
-module.exports = {
-oneProduct
 }
