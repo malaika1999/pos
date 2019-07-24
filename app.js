@@ -1,16 +1,24 @@
 const express = require('express');
-var app = express();
-var port = process.env.PORT || 8000;
 var bodyParser = require('body-parser');
-var configDb = require('./config/db');
-const mongoose = require('mongoose');
 var multer = require('multer');
+const ejs = require('ejs');
+const path = require('path');
+
+//Express app
+var app = express();
+//Initializing Port
+var port = process.env.PORT || 8000;
+
 
 // ****** Product Routes****** 
 const productRoute = require('./routes/product/productRoutes')
 const brandRoute = require('./routes/product/brandRoutes');
 const categoryRoute = require('./routes/product/categoryRoutes');
 const departmentRoute = require('./routes/product/departmentRoutes');
+
+// Configuring database
+var configDb = require('./config/db');
+const mongoose = require('mongoose');
 
 // **** Connecting Database *****
 mongoose.connect(configDb.url, {
@@ -23,29 +31,49 @@ mongoose.connect(configDb.url, {
     process.exit();
 });
 
-// get information from html forms
+// parse requests of content-type - application/json
 app.use(bodyParser.json()); 
+// parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 
 //*** uploading file/image *****/
-var upload = multer({ storage: storage })
-
 var storage = multer.diskStorage({
-    destination: function(req, file, cb) {
-        cb(null, './public');
-     },
-    filename: function (req, file, cb) {
-        cb(null , download.jpg);
-    }
+  destination: './public',
+  filename: function (req, file, cb) {
+      cb(null , Date.now() + '-' + file.originalname);
+  }
 });
+
+var upload = multer({ storage: storage}).single('myImage')
+
+   // Set view engine
+app.set('view engine', 'ejs')
+// Set static folder
+app.use(express.static('./public'));
+// Set the initial route
+app.get('/', (req, res) => {
+    res.render('index');
+})
   
-  app.post('/single', upload.single('profile'), (req, res) => {
-    try {
-      res.send(req.file);
-    }catch(err) {
-      res.send(400);
-    }
+app.post('/upload', (req, res) => {
+  upload (req,res, (err) => {
+    if(err){
+      res.render('index', {msg: err})
+    }else{
+        if(req.file == undefined){
+          res.render('index', {msg: 'No file selected'})
+        }
+        else{
+          res.send({
+            msg: 'File uploaded successfully!'
+          })
+          console.log('File uploaded successfully!')
+          
+        }
+      }
+    })
   });
+
 
   // *****  Using Routes  ******
   //Product Module Routes

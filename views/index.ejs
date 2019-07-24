@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Image upload</title>
+    
+</head>
+<body>
+        <h1>Upload images/folders</h1>
+    <form method="POST" action="/upload" enctype="multipart/form-data" onsubmit="uploadImage()">
+        <img id="output" />
+        <input type="file" name="myImage" accept="image/*" />
+        <input type="submit" value="upload Photo" />
+    
+    </form>
+</body>
+<html></html>
