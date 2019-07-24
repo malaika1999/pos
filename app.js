@@ -23,7 +23,8 @@ mongoose.connect(configDb.url, {
     process.exit();
 });
 
-app.use(bodyParser.json()); // get information from html forms
+// get information from html forms
+app.use(bodyParser.json()); 
 app.use(bodyParser.urlencoded({ extended: true }));
 
 //*** uploading file/image *****/
