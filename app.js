@@ -46,11 +46,6 @@ var storage = multer.diskStorage({
     }
   });
 
-//   app.use(function(err, req, res, next) {
-//     res.status(err.status || 500);
-//     res.json({ error : err });
-//   });
-
   // *****  Using Routes  ******
   //Product Module Routes
   app.use('/api/product', productRoute);
