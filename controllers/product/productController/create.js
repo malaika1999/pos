@@ -7,15 +7,23 @@ exports.createProduct = (req,res) => {
             })
         }
         const product = new Product({
-            productId : req.body.productId, 
             name: req.body.name,
-            description: req.body.description,
-            brand: req.body.brand,
             category: req.body.category,
+            brand: req.body.brand,
+            sku: req.body.sku,
+            description: req.body.description,
+            quantityAtHand:  req.body.quantityAtHand,
+            asOfDate: req.body.asOfDate,
+            reOrderPoint: req.body.reOrderPoint,
+            inventoryAssetAccount: req.body.inventoryAssetAccount,
             department: req.body.department,
-            unit: req.body.unit,
-            barcode: req.body.barcode,
-            isRestricted: req.body.isRestricted  
+            salesPrice: req.body.salesPrice,
+            incomeAccount: req.body.incomeAccount,
+            purchaseInfo: req.body.purchaseInfo,
+            costExpenseAccount: req.body.costExpenseAccount,
+            preferredVendor: req.body.preferredVendor,
+            isRestricted: req.body.isRestricted,
+            image: req.body.image
         });
         product.save().then(data=> {
             res.send(data);

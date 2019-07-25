@@ -37,13 +37,14 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 //*** uploading file/image *****/
+//Set Storage Engine
 var storage = multer.diskStorage({
   destination: './public',
   filename: function (req, file, cb) {
       cb(null , Date.now() + '-' + file.originalname);
   }
 });
-
+//Init upload
 var upload = multer({ storage: storage}).single('myImage')
 
    // Set view engine
@@ -64,11 +65,11 @@ app.post('/upload', (req, res) => {
           res.render('index', {msg: 'No file selected'})
         }
         else{
-          res.send({
-            msg: 'File uploaded successfully!'
+          res.render('index', {
+            msg: 'File uploaded successfully!',
+            file: 'public/${req.file.filename}'
           })
           console.log('File uploaded successfully!')
-          
         }
       }
     })

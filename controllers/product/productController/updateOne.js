@@ -8,15 +8,23 @@ exports.updateProduct =  (req, res) => {
     }
 
     Product.findByIdAndUpdate(req.params.pId,{
-        productId: req.body.productId,
         name: req.body.name,
-        description: req.body.description,
-        brand: req.body.brand,
         category: req.body.category,
+        brand: req.body.brand,
+        sku: req.body.sku,
+        description: req.body.description,
+        quantityAtHand:  req.body.quantityAtHand,
+        asOfDate: req.body.asOfDate,
+        reOrderPoint: req.body.reOrderPoint,
+        inventoryAssetAccount: req.body.inventoryAssetAccount,
         department: req.body.department,
-        unit: req.body.unit,
+        salesPrice: req.body.salesPrice,
+        incomeAccount: req.body.incomeAccount,
+        purchaseInfo: req.body.purchaseInfo,
+        costExpenseAccount: req.body.costExpenseAccount,
+        preferredVendor: req.body.preferredVendor,
         isRestricted: req.body.isRestricted,
-        image : req.body.image  
+        image: req.body.image  
     },{new : true})
     .then(product => {
         if(!product){
