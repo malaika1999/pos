@@ -15,6 +15,8 @@ const productRoute = require('./routes/product/productRoutes')
 const brandRoute = require('./routes/product/brandRoutes');
 const categoryRoute = require('./routes/product/categoryRoutes');
 const departmentRoute = require('./routes/product/departmentRoutes');
+// ***** Employee Routes *******
+const employeeRoute = require('./routes/employee/employeeRoutes')
 
 // Configuring database
 var configDb = require('./config/db');
@@ -82,6 +84,8 @@ app.post('/upload', (req, res) => {
   app.use('/api/brand', brandRoute); 
   app.use('/api/category', categoryRoute);
   app.use('/api/department', departmentRoute);
+  //Employee Routes
+  app.use('/api/employee', employeeRoute)
 
 
   
