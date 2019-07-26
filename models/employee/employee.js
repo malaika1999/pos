@@ -23,7 +23,9 @@ var employeeSchema = new mongoose.Schema({
     NIC: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
+        maxlength: 13,
+        minlength: 13
     },
     contactNo: {
         type: String,
@@ -49,9 +51,9 @@ var employeeSchema = new mongoose.Schema({
     postalCode: {
         type: Number
     },
-    // dateOfBirth: {
-    //     type: Date
-    // },
+    dateOfBirth: {
+        type: Date
+    },
     role: {
         type: String
     },
@@ -71,6 +73,9 @@ var employeeSchema = new mongoose.Schema({
     image: {
         type: String,
         default: 'https://via.placeholder.com/200'
+    },
+    joiningDate:{
+        type: Date
     }
     
 })
@@ -81,7 +86,6 @@ employeeSchema.plugin(uniqueValidator);
 employeeSchema.plugin(autoIncrement.plugin, {
     model: 'employee',
     field: 'employeeId',
-    //startAt: 0,
     incrementBy: 1
 })
 

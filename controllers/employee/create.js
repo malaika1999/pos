@@ -16,13 +16,14 @@ exports.createEmployee = (req,res) => {
             country: req.body.country,
             state: req.body.state,
             postalCode: req.body.postalCode,
-            // dateOfBirth: req.body.dateOfBirth,
+            dateOfBirth: req.body.dateOfBirth,
             role: req.body.role,
             bankAccNo: req.body.bankAccNo,
             perHourRate: req.body.perHourRate,
             workingHoursPerWeek: req.body.workingHoursPerWeek,
             extraHourRate: req.body.extraHourRate,
-            image: req.body.image
+            image: req.body.image,
+            joiningDate: req.body.joiningDate
         });
         employee.save().then(data=> {
             res.send(data);

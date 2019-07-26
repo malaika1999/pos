@@ -23,7 +23,8 @@ exports.updateEmployee =  (req, res) => {
         perHourRate: req.body.perHourRate,
         workingHoursPerWeek: req.body.workingHoursPerWeek,
         extraHourRate: req.body.extraHourRate,
-        image: req.body.image
+        image: req.body.image,
+        joiningDate: req.body.joiningDate
     },{new : true})
     .then(employee => {
         if(!employee){
