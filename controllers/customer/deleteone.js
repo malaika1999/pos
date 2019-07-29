@@ -1,22 +1,34 @@
-const Customer = require('../../models/customer/customer.js')
+const mongoose = require('mongoose');
+const Customer = require("../../models/customer/index.js");
 
-exports.deleteCustomer = (req, res) => {
-    Customer.findByIdAndRemove(req.params.cusId)
-    .then(customer => {
-        if(!customer){
-            return res.status(404).send({
-                message:"customer not found with id " + req.params.cusId
+const deleteCustomer = async (req, res) => {
+try {
+    let deletedCustomer = await Customer.findByIdAndDelete({
+        _id: req.params.cusId
+    }).exec();
+    if (deletedCustomer) {
+        return res.send({
+            status: true,
+            message: "Customer deleted successfully",
+            data: deletedCustomer
             })
-        }
-        res.send({message: "customer deleted successfully!"});
-    }).catch(err => {
-        if(err.kind === 'ObjectId' || err.name === 'NotFound') {
-            return res.status(404).send({
-                message: "customer not found with id " + req.params.cusId
-            });                
-        }
-        return res.status(500).send({
-            message: "Could not delete customer with id " + req.params.cusId
-        });
-    });
+    }
+    else {
+        return res.send({
+            status: false,
+            message: "Customer not found with id" + req.params.cusId,
+        })
+    }
+
+} catch (error) {
+    return res.status(500).send({
+        status:false,
+        message: error.message
+    })
+}
+    
+}
+
+module.exports = {
+    deleteCustomer
 }

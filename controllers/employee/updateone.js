@@ -1,13 +1,10 @@
-const Employee = require('../../models/employee/employee.js')
+const Employee = require("../../models/employee/index.js");
 
-exports.updateEmployee =  (req, res) => {
-    if(!req.body.name){
-        return res.status(400).send({
-            message: "employee name can not be empty"
-        });
-    }
-
-    Employee.findByIdAndUpdate(req.params.eId,{
+const updateEmployee = async (req, res) => {
+  try {
+    let updatedEmployee = await Employee.findOneAndUpdate(
+      { _id: req.params.eId },
+      {
         name: req.body.name,
         email: req.body.email,
         NIC: req.body.NIC,
@@ -25,24 +22,35 @@ exports.updateEmployee =  (req, res) => {
         extraHourRate: req.body.extraHourRate,
         image: req.body.image,
         joiningDate: req.body.joiningDate
-    },{new : true})
-    .then(employee => {
-        if(!employee){
-            return res.status(404).send({
-                message: "employee not found with id " + req.params.eId
-            });
-        }
-        res.send({
-            message:"employee updated successfully"
-        });
-    }).catch (err => {
-        if(err.kind === 'ObjectId') {
-            return res.status(404).send({
-                message: "employee not found with id " + req.params.eId
-            });                
-        }
-        return res.status(500).send({
-            message: "Error updating product with id " + req.params.pId
-        });
+      }
+    ).exec();
+    if (
+        !req.body.name ||
+        !req.body.email ||
+        !req.body.contactNo ||
+        !req.body.address ||
+        !req.body.city ||
+        !req.body.country ||
+        !req.body.state ||
+        !req.body.NIC
+    ) {
+      return res.status(400).send({
+        status: false,
+        message: "Its mandatory to fill all required fields"
+      });
+    }
+    return res.status(200).send({
+      status: true,
+      message: "Employee updated successfully",
+      data: updatedEmployee
     });
-}
+  } catch (error) {
+      return res.status(500).send({
+        status: false,
+        message: error.message
+      });
+    }
+};
+module.exports = {
+  updateEmployee
+};

@@ -1,20 +1,31 @@
-const Category = require('../../../models/product/category.js');
+const Category = require("../../../models/product/category/index.js");
 
-exports.createCategory =  (req, res) => {
-    if(!req.body.name) {
-        return res.status(400).send({
-          message: "category name  cannot be empty"
-        });
-      }
+const createCategory = async (req, res) => {
+  try {
     let category = new Category({
         name: req.body.name,
-    })
-    category.save()
-    .then(data => {
-        res.send(data);
-    }).catch(err =>{
-            res.status(500).send({
-                message:"couldn't create category"
-            })
-    })
-}
+      });
+      if (!req.body.name )
+        return res.status(400).send({
+          status: false,
+          message: "Its mandatory to fill all required fields"
+        });
+    let createdCategory = await category.save();
+        res.status(201).send({
+          status: true,
+          message: "Category created successfully",
+          data: createdCategory
+        });  
+  } catch (error) {
+    res.status(500).send({
+        status: false,
+        message: error.message
+      });  
+  }
+    
+    
+};
+module.exports = {
+  createCategory
+};
+

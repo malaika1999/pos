@@ -1,19 +1,16 @@
-const Product = require('../../../models/product/product.js');
+const Product = require("../../../models/product/product/index.js");
 
-exports.updateProduct =  (req, res) => {
-    if(!req.body.name){
-        return res.status(400).send({
-            message: "product name can not be empty"
-        });
-    }
-
-    Product.findByIdAndUpdate(req.params.pId,{
+const updateProduct = async (req, res) => {
+  try {
+    let updatedProduct = await Product.findOneAndUpdate(
+      { _id: req.params.pId },
+      {
         name: req.body.name,
         category: req.body.category,
         brand: req.body.brand,
         sku: req.body.sku,
         description: req.body.description,
-        quantityAtHand:  req.body.quantityAtHand,
+        quantityAtHand: req.body.quantityAtHand,
         asOfDate: req.body.asOfDate,
         reOrderPoint: req.body.reOrderPoint,
         inventoryAssetAccount: req.body.inventoryAssetAccount,
@@ -24,25 +21,31 @@ exports.updateProduct =  (req, res) => {
         costExpenseAccount: req.body.costExpenseAccount,
         preferredVendor: req.body.preferredVendor,
         isRestricted: req.body.isRestricted,
-        image: req.body.image  
-    },{new : true})
-    .then(product => {
-        if(!product){
-            return res.status(404).send({
-                message: "Product not found with id " + req.params.pId
-            });
-        }
-        res.send({
-            message:"product updated successfully"
-        });
-    }).catch (err => {
-        if(err.kind === 'ObjectId') {
-            return res.status(404).send({
-                message: "product not found with id " + req.params.pId
-            });                
-        }
-        return res.status(500).send({
-            message: "Error updating product with id " + req.params.pId
-        });
+        image: req.body.image
+      }
+    ).exec();
+    if (
+        !req.body.name ||
+        !req.body.quantityAtHand ||
+        !req.body.sku
+    ) {
+      return res.status(400).send({
+        status: false,
+        message: "Its mandatory to fill all required fields"
+      });
+    }
+    return res.status(200).send({
+      status: true,
+      message: "Product updated successfully",
+      data: updatedProduct
     });
-}
+  } catch (error) {
+      return res.status(500).send({
+        status: false,
+        message: error.message
+      });
+    }
+};
+module.exports = {
+  updateProduct
+};

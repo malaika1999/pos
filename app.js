@@ -11,14 +11,14 @@ var port = process.env.PORT || 8000;
 
 
 // ****** Product Routes****** 
-const productRoute = require('./routes/product/productRoutes')
-const brandRoute = require('./routes/product/brandRoutes');
-const categoryRoute = require('./routes/product/categoryRoutes');
-const departmentRoute = require('./routes/product/departmentRoutes');
+const productRoute = require('./routes/product/product/index')
+const brandRoute = require('./routes/product/brand/index');
+const categoryRoute = require('./routes/product/category/index');
+const departmentRoute = require('./routes/product/department/index');
 // ***** Employee Routes *******
-const employeeRoute = require('./routes/employee/employeeRoutes')
+const employeeRoute = require('./routes/employee/index')
 //***** Customer Routes ****
-const customerRoute = require('./routes/customer/customerRoutes')
+const customerRoute = require('./routes/customer/index')
 
 // Configuring database
 var configDb = require('./config/db');

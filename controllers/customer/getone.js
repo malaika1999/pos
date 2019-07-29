@@ -1,21 +1,17 @@
-const Customer = require('../../models/customer/customer.js')
+const Customer = require("../../models/customer/index.js");
 
-exports.oneCustomer =  (req, res) => {
-    Customer.findById(req.params.cusId)
-    .then(customer => {
-        if(!customer){
-            return res.status(404).send({
-                message:"customer not found with id"+ req.params.cusId
-            })
-        }
-        res.send(customer);
-    })
-    .catch(err => {
-        if(err.kind == "ObjectId"){
-            return res.status(404).send({
-                message: "customer not found with id " + req.params.cusId
-              });
-        }
-        return res.status(500).send({message: "error"});
-    })
-}
+const oneCustomer = async (req, res) => {
+  try {
+    var customer = await Customer.findById({ _id: req.params.cusId }).exec();
+    if (!customer) {
+      return res.send({ message: "Customer not found" });
+    } else if (customer) {
+      return res.send({ message: "Customer found" });
+    }
+  } catch (error) {
+    return res.send({ message: error.message });
+  }
+};
+module.exports = {
+  oneCustomer
+};

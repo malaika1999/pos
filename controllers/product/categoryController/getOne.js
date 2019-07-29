@@ -1,21 +1,17 @@
-const Category = require('../../../models/product/category.js');
+const Category = require("../../../models/product/category/index.js");
 
-exports.oneCategory =  (req, res) => {
-    Category.findById(req.params.cId)
-    .then(category => {
-        if(!category){
-            return res.status(404).send({
-                message:"category not found with id"+ req.params.cId
-            })
-        }
-        res.send(category);
-    })
-    .catch(err => {
-        if(err.kind == "ObjectId"){
-            return res.status(404).send({
-                message: "category not found with id " + req.params.cId
-              });
-        }
-        return res.status(500).send({message: "error"});
-    })
-}
+const oneCategory = async (req, res) => {
+  try {
+    var category = await Category.findById({ _id: req.params.cId }).exec();
+    if (!category) {
+      return res.send({ message: "category not found" });
+    } else if (category) {
+      return res.send({ message: "category found", data: category });
+    }
+  } catch (error) {
+    return res.send({ message: error.message });
+  }
+};
+module.exports = {
+  oneCategory
+};

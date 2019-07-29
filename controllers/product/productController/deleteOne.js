@@ -1,22 +1,33 @@
-const Product = require('../../../models/product/product.js');
+const Product = require("../../../models/product/product/index.js");
 
-exports.deleteProduct = (req, res) => {
-    Product.findByIdAndRemove(req.params.pId)
-    .then(product => {
-        if(!product){
-            return res.status(404).send({
-                message:"product not found with id " + req.params.pId
+const deleteProduct = async (req, res) => {
+try {
+    let deletedProduct = await Product.findByIdAndDelete({
+        _id: req.params.pId
+    }).exec();
+    if (deletedProduct) {
+        return res.send({
+            status: true,
+            message: "product deleted successfully",
+            data: deletedProduct
             })
-        }
-        res.send({message: "product deleted successfully!"});
-    }).catch(err => {
-        if(err.kind === 'ObjectId' || err.name === 'NotFound') {
-            return res.status(404).send({
-                message: "product not found with id " + req.params.pId
-            });                
-        }
-        return res.status(500).send({
-            message: "Could not delete product with id " + req.params.pId
-        });
-    });
+    }
+    else {
+        return res.send({
+            status: false,
+            message: "product not found with id" + req.params.pId,
+        })
+    }
+
+} catch (error) {
+    return res.status(500).send({
+        status:false,
+        message: error.message
+    })
+}
+    
+}
+
+module.exports = {
+    deleteProduct
 }

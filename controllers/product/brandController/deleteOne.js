@@ -1,22 +1,33 @@
-const Brand= require('../../../models/product/brand.js');
+const Brand = require("../../../models/product/brand/index.js");
 
-exports.deleteBrand = (req, res) => {
-    Brand.findByIdAndRemove(req.params.bId)
-    .then(brand => {
-        if(!brand){
-            return res.status(404).send({
-                message:"brand not found with id " + req.params.bId
+const deleteBrand = async (req, res) => {
+try {
+    let deletedBrand = await Brand.findByIdAndDelete({
+        _id: req.params.bId
+    }).exec();
+    if (deletedBrand) {
+        return res.send({
+            status: true,
+            message: "brand deleted successfully",
+            data: deletedBrand
             })
-        }
-        res.send({message: "brand deleted successfully!"});
-    }).catch(err => {
-        if(err.kind === 'ObjectId' || err.name === 'NotFound') {
-            return res.status(404).send({
-                message: "brand not found with id " + req.params.bId
-            });                
-        }
-        return res.status(500).send({
-            message: "Could not delete brand with id " + req.params.bId
-        });
-    });
+    }
+    else {
+        return res.send({
+            status: false,
+            message: "brand not found with id" + req.params.bId,
+        })
+    }
+
+} catch (error) {
+    return res.status(500).send({
+        status:false,
+        message: error.message
+    })
+}
+    
+}
+
+module.exports = {
+    deleteBrand
 }

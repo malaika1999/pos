@@ -1,22 +1,33 @@
-const Category= require('../../../models/product/category.js');
+const Category = require("../../../models/product/category/index.js");
 
-exports.deleteCategory = (req, res) => {
-    Category.findByIdAndRemove(req.params.cId)
-    .then(category => {
-        if(!category){
-            return res.status(404).send({
-                message:"category not found with id " + req.params.cId
+const deleteCategory = async (req, res) => {
+try {
+    let deletedCategory = await Category.findByIdAndDelete({
+        _id: req.params.bId
+    }).exec();
+    if (deletedCategory) {
+        return res.send({
+            status: true,
+            message: "category deleted successfully",
+            data: deletedCategory
             })
-        }
-        res.send({message: "category deleted successfully!"});
-    }).catch(err => {
-        if(err.kind === 'ObjectId' || err.name === 'NotFound') {
-            return res.status(404).send({
-                message: "category not found with id " + req.params.cId
-            });                
-        }
-        return res.status(500).send({
-            message: "Could not delete category with id " + req.params.cId
-        });
-    });
+    }
+    else {
+        return res.send({
+            status: false,
+            message: "category not found with id" + req.params.cId,
+        })
+    }
+
+} catch (error) {
+    return res.status(500).send({
+        status:false,
+        message: error.message
+    })
+}
+    
+}
+
+module.exports = {
+    deleteCategory
 }

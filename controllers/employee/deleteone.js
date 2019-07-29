@@ -1,22 +1,34 @@
-const Employee = require('../../models/employee/employee.js')
+const mongoose = require('mongoose');
+const Employee = require("../../models/employee/index.js");
 
-exports.deleteEmployee = (req, res) => {
-    Employee.findByIdAndRemove(req.params.eId)
-    .then(employee => {
-        if(!employee){
-            return res.status(404).send({
-                message:"employee not found with id " + req.params.eId
+const deleteEmployee = async (req, res) => {
+try {
+    let deletedEmployee = await Employee.findByIdAndDelete({
+        _id: req.params.eId
+    }).exec();
+    if (deletedEmployee) {
+        return res.send({
+            status: true,
+            message: "Employee deleted successfully",
+            data: deletedEmployee
             })
-        }
-        res.send({message: "employee deleted successfully!"});
-    }).catch(err => {
-        if(err.kind === 'ObjectId' || err.name === 'NotFound') {
-            return res.status(404).send({
-                message: "employee not found with id " + req.params.eId
-            });                
-        }
-        return res.status(500).send({
-            message: "Could not delete employee with id " + req.params.eId
-        });
-    });
+    }
+    else {
+        return res.send({
+            status: false,
+            message: "Employee not found with id" + req.params.eId,
+        })
+    }
+
+} catch (error) {
+    return res.status(500).send({
+        status:false,
+        message: error.message
+    })
+}
+    
+}
+
+module.exports = {
+    deleteEmployee
 }

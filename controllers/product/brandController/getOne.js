@@ -1,21 +1,17 @@
-const Brand = require('../../../models/product/brand.js');
+const Brand = require("../../../models/product/brand/index.js");
 
-exports.oneBrand =  (req, res) => {
-    Brand.findById(req.params.bId)
-    .then(brand => {
-        if(!brand){
-            return res.status(404).send({
-                message:"brand not found with id"+ req.params.bId
-            })
-        }
-        res.send(brand);
-    })
-    .catch(err => {
-        if(err.kind == "ObjectId"){
-            return res.status(404).send({
-                message: "brand not found with id " + req.params.bId
-              });
-        }
-        return res.status(500).send({message: "error"});
-    })
-}
+const oneBrand = async (req, res) => {
+  try {
+    var brand = await Brand.findById({ _id: req.params.bId }).exec();
+    if (!brand) {
+      return res.send({ message: "brand not found" });
+    } else if (brand) {
+      return res.send({ message: "brand found", data: brand });
+    }
+  } catch (error) {
+    return res.send({ message: error.message });
+  }
+};
+module.exports = {
+  oneBrand
+};

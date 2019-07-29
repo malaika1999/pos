@@ -1,32 +1,33 @@
-const Department = require('../../../models/product/department.js');
+const Department = require("../../../models/product/department/index.js");
 
-exports.updateDepartment = async (req, res) => {
-    if(!req.body.name){
-        return res.status(400).send({
-            message: "Department name can not be empty"
-        });
-    }
-
-    Department.findByIdAndUpdate(req.params.dId,{
+const updateDepartment = async (req, res) => {
+  try {
+    let updatedDepartment = await Department.findOneAndUpdate(
+      { _id: req.params.dId },
+      {
         name: req.body.name
-    },{new : true})
-    .then(department => {
-        if(!department){
-            return res.status(404).send({
-                message: "Department not found with id " + req.params.dId
-            });
-        }
-        res.send({
-            message:"department updated successfully"
-        });
-    }).catch (err => {
-        if(err.kind === 'ObjectId') {
-            return res.status(404).send({
-                message: "Department not found with id " + req.params.dId
-            });                
-        }
-        return res.status(500).send({
-            message: "Error updating department with id " + req.params.dId
-        });
+      }
+    ).exec();
+    if (
+        !req.body.name 
+    ) {
+      return res.status(400).send({
+        status: false,
+        message: "Its mandatory to fill all required fields"
+      });
+    }
+    return res.status(200).send({
+      status: true,
+      message: "department updated successfully",
+      data: updatedDepartment
     });
-}
+  } catch (error) {
+      return res.status(500).send({
+        status: false,
+        message: error.message
+      });
+    }
+};
+module.exports = {
+  updateDepartment
+};

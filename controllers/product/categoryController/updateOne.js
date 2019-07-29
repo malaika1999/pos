@@ -1,32 +1,33 @@
-const Category = require('../../../models/product/category.js');
+const Category = require("../../../models/product/category/index.js");
 
-exports.updateCategory = (req, res) => {
-    if(!req.body.name){
-        return res.status(400).send({
-            message: "category name can not be empty"
-        });
-    }
-
-    Category.findByIdAndUpdate(req.params.cId,{
+const updateCategory = async (req, res) => {
+  try {
+    let updatedCategory = await Category.findOneAndUpdate(
+      { _id: req.params.cId },
+      {
         name: req.body.name
-    },{new : true})
-    .then(category => {
-        if(!category){
-            return res.status(404).send({
-                message: "category not found with id " + req.params.cId
-            });
-        }
-        res.send({
-            message:"category updated successfully"
-        });
-    }).catch (err => {
-        if(err.kind === 'ObjectId') {
-            return res.status(404).send({
-                message: "category not found with id " + req.params.cId
-            });                
-        }
-        return res.status(500).send({
-            message: "Error updating category with id " + req.params.cId
-        });
+      }
+    ).exec();
+    if (
+        !req.body.name 
+    ) {
+      return res.status(400).send({
+        status: false,
+        message: "Its mandatory to fill all required fields"
+      });
+    }
+    return res.status(200).send({
+      status: true,
+      message: "category updated successfully",
+      data: updatedCategory
     });
-}
+  } catch (error) {
+      return res.status(500).send({
+        status: false,
+        message: error.message
+      });
+    }
+};
+module.exports = {
+  updateCategory
+};

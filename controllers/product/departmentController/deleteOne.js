@@ -1,22 +1,33 @@
-const Department = require('../../../models/product/department.js');
+const Department = require("../../../models/product/department/index.js");
 
-exports.deleteDepartment = (req, res) => {
-    Department.findByIdAndRemove(req.params.dId)
-    .then(department => {
-        if(!department){
-            return res.status(404).send({
-                message:"department not found with id " + req.params.dId
+const deleteDepartment = async (req, res) => {
+try {
+    let deletedDepartment = await Department.findByIdAndDelete({
+        _id: req.params.dId
+    }).exec();
+    if (deletedDepartment) {
+        return res.send({
+            status: true,
+            message: "department deleted successfully",
+            data: deletedDepartment
             })
-        }
-        res.send({message: "department deleted successfully!"});
-    }).catch(err => {
-        if(err.kind === 'ObjectId' || err.name === 'NotFound') {
-            return res.status(404).send({
-                message: "department not found with id " + req.params.dId
-            });                
-        }
-        return res.status(500).send({
-            message: "Could not delete department with id " + req.params.dId
-        });
-    });
+    }
+    else {
+        return res.send({
+            status: false,
+            message: "department not found with id" + req.params.dId,
+        })
+    }
+
+} catch (error) {
+    return res.status(500).send({
+        status:false,
+        message: error.message
+    })
+}
+    
+}
+
+module.exports = {
+    deleteDepartment
 }

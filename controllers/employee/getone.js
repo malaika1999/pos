@@ -1,21 +1,17 @@
-const Employee = require('../../models/employee/employee.js')
+const Employee = require("../../models/employee/index.js");
 
-exports.oneEmployee =  (req, res) => {
-    Employee.findById(req.params.eId)
-    .then(employee => {
-        if(!employee){
-            return res.status(404).send({
-                message:"employee not found with id"+ req.params.eId
-            })
-        }
-        res.send(employee);
-    })
-    .catch(err => {
-        if(err.kind == "ObjectId"){
-            return res.status(404).send({
-                message: "employee not found with id " + req.params.eId
-              });
-        }
-        return res.status(500).send({message: "error"});
-    })
-}
+const oneEmployee = async (req, res) => {
+  try {
+    var employee = await Employee.findById({ _id: req.params.eId }).exec();
+    if (!employee) {
+      return res.send({ message: "Employee not found" });
+    } else if (employee) {
+      return res.send({ message: "Employee found", data: employee });
+    }
+  } catch (error) {
+    return res.send({ message: error.message });
+  }
+};
+module.exports = {
+  oneEmployee
+};

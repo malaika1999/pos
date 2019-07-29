@@ -1,12 +1,29 @@
-const Employee = require('../../models/employee/employee.js')
+const Employee = require('../../models/employee/index.js')
 
-exports.allEmployees =  (req, res) => {
-    Employee.find()
-    .then(employee => {
-        res.send(employee);
-    } ).catch(err => {
+const allEmployees = async (req, res) => {
+    try {
+        const employee = await Employee.find().exec();
+        if(employee){
+            res.status(200).send({
+                status: true,
+                message: "Following are the employees stored in database",
+                data: employee
+            })
+        } else if(!employee){
+            res.status(404).send({
+                status: false,
+                message: "No employees found"
+            })
+        }    
+    } catch (error) {
         res.status(500).send({
-            message: "no employee found"
+            status:false,
+            message: error.message
         })
-    })
+    }
+    
+    
+}
+module.exports = {
+    allEmployees
 }

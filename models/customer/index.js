@@ -48,7 +48,8 @@ var customerSchema = new mongoose.Schema({
         type: Number
     },
     cardNumber: {
-        type: String
+        type: String,
+        required: true
     }
 })
 

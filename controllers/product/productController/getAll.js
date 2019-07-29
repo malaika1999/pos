@@ -1,12 +1,29 @@
-const product = require('../../../models/product/product.js');
+const Product = require("../../../models/product/product/index.js");
 
-exports.allProducts =  (req, res) => {
-    product.find()
-    .then(product => {
-        res.send(product);
-    } ).catch(err => {
+const allProducts = async (req, res) => {
+    try {
+        const product = await Product.find().exec();
+        if(product){
+            res.status(200).send({
+                status: true,
+                message: "Following are the products stored in database",
+                data: product
+            })
+        } else if(!product){
+            res.status(404).send({
+                status: false,
+                message: "No products found"
+            })
+        }    
+    } catch (error) {
         res.status(500).send({
-            message: "no product found"
+            status:false,
+            message: error.message
         })
-    })
+    }
+    
+    
+}
+module.exports = {
+    allProducts
 }

@@ -1,12 +1,29 @@
-const Customer = require('../../models/customer/customer.js')
+const Customer = require('../../models/customer/index.js')
 
-exports.allCustomers =  (req, res) => {
-    Customer.find()
-    .then(customer => {
-        res.send(customer);
-    } ).catch(err => {
+const allCustomers = async (req, res) => {
+    try {
+        const customer = await Customer.find().exec();
+        if(customer){
+            res.status(200).send({
+                status: true,
+                message: "Following are the customers stored in database",
+                data: customer
+            })
+        } else if(!customer){
+            res.status(404).send({
+                status: false,
+                message: "No customers found"
+            })
+        }    
+    } catch (error) {
         res.status(500).send({
-            message: "no customer found"
+            status:false,
+            message: error.message
         })
-    })
+    }
+    
+    
+}
+module.exports = {
+    allCustomers
 }
