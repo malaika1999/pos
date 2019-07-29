@@ -22,6 +22,8 @@ const customerRoute = require("./routes/customer/index");
 const storeRoute = require("./routes/store/index");
 //******Inventory Routes *******/
 const inventoryRoute = require("./routes/inventory/index");
+//******Store Product *****/
+const storeProductRoute = require('./routes/storeProduct/index')
 
 // Configuring database
 var configDb = require("./config/db");
@@ -97,6 +99,8 @@ app.use("/api/customer", customerRoute);
 app.use("/api/store", storeRoute);
 //Inventory Routes
 app.use("/api/inventory", inventoryRoute);
+//Store Product Routes
+app.use('/api/storeProduct', storeProductRoute)
 
 app.listen(port);
 console.log("The magic happens on port " + port);

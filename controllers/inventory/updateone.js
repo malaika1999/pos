@@ -1,4 +1,5 @@
 const Inventory = require("../../models/inventory/index.js");
+const configdb = require('../../config/db')
 
 const updateInventory = async (req, res) => {
   try {
@@ -9,8 +10,7 @@ const updateInventory = async (req, res) => {
         productName: req.body.productName,
         stockAvailable: req.body.stockAvailable,
         retailPrice: req.body.retailPrice,
-        soldQty: req.body,
-        soldQty
+        soldQty: req.body.soldQty
       }
     ).exec();
     if (
