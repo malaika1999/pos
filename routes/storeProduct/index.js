@@ -6,11 +6,15 @@ const getAllController = require('../../controllers/storeProduct/getall');
 const getOneController = require('../../controllers/storeProduct/getone');
 const updateOneController = require('../../controllers/storeProduct/updateone');
 const deleteOneController = require('../../controllers/storeProduct/deleteone');
+const addStockController = require('../../controllers/storeProduct/addStock')
+const updateStockController = require('../../controllers/storeProduct/updateStock')
 
 router.post('/create', createController.createStoreProduct);
 router.get('/getall/', getAllController.allStoreProducts);
 router.get('/getone/:spId', getOneController.oneStoreProduct);
 router.put('/update/:spId', updateOneController.updateStoreProduct);
 router.delete('/delete/:spId', deleteOneController.deleteStoreProduct);
+router.put('/addStock/:sId/:pId', addStockController.addStock);
+router.put('/updateStock/:sId/:pId', updateStockController.updateStock);
 
 module.exports=router;

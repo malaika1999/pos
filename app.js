@@ -20,9 +20,7 @@ const employeeRoute = require("./routes/employee/index");
 const customerRoute = require("./routes/customer/index");
 //*****Store Routes *****/
 const storeRoute = require("./routes/store/index");
-//******Inventory Routes *******/
-const inventoryRoute = require("./routes/inventory/index");
-//******Store Product *****/
+//******Store Product Routes *****/
 const storeProductRoute = require('./routes/storeProduct/index')
 
 // Configuring database
@@ -97,8 +95,6 @@ app.use("/api/employee", employeeRoute);
 app.use("/api/customer", customerRoute);
 //Store Routes
 app.use("/api/store", storeRoute);
-//Inventory Routes
-app.use("/api/inventory", inventoryRoute);
 //Store Product Routes
 app.use('/api/storeProduct', storeProductRoute)
 

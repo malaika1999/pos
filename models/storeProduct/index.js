@@ -11,6 +11,9 @@ const storeProductSchema = mongoose.Schema({
             type: Schema.Types.ObjectId,
             ref: 'product'
         },
+        // quantity:{
+        //     type: Number
+        // }
         stockAvailable: {
             type: Number
         },

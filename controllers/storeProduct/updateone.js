@@ -7,21 +7,18 @@ const updateStoreProduct = async (req, res) => {
       { _id: req.params.spId },
       {
         products: req.body.products,
-      storeId: req.body.storeId
+        storeId: req.body.storeId
       }
     ).exec();
-    // if (
-    //   !req.body.storeId ||
-    //   !req.body.productName ||
-    //   !req.body.stockAvailable ||
-    //   !req.body.retailPrice ||
-    //   !req.body.soldQty
-    // ) {
-    //   return res.status(400).send({
-    //     status: false,
-    //     message: "Its mandatory to fill all required fields"
-    //   });
-    // }
+    if (
+      !req.body.storeId ||
+      !req.body.products
+    ) {
+      return res.status(400).send({
+        status: false,
+        message: "Its mandatory to fill all required fields"
+      });
+    }
     return res.status(200).send({
       status: true,
       message: "Store Product updated successfully",
