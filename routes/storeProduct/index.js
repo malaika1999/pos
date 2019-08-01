@@ -14,7 +14,7 @@ router.get('/getall/', getAllController.allStoreProducts);
 router.get('/getone/:spId', getOneController.oneStoreProduct);
 router.put('/update/:spId', updateOneController.updateStoreProduct);
 router.delete('/delete/:spId', deleteOneController.deleteStoreProduct);
-router.put('/addStock/:sId/:pId', addStockController.addStock);
-router.put('/updateStock/:sId/:pId', updateStockController.updateStock);
+router.put('/addStock/', addStockController.addStock);
+router.put('/updateStock/', updateStockController.updateStock);
 
 module.exports=router;

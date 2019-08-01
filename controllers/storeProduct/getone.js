@@ -6,7 +6,7 @@ const oneStoreProduct = async (req, res) => {
     if (!storeProduct) {
       return res.send({ message: "store Product not found" });
     } else if (storeProduct) {
-      return res.send({ message: "store Product found", data: storeProduct });
+      return res.send({ message: "store Product found", data: storeProduct});
     }
   } catch (error) {
     return res.send({ message: error.message });
