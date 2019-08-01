@@ -8,15 +8,14 @@ try {
     let addedStock = await StoreProduct.findOne({
         storeId: req.body.storeId
        }).exec();
-       let productsInStore = addedStock.products;
-     
+    let productsInStore = addedStock.products;
+    let quantity = req.body.quantity
+       
       let existingProduct = _.find(productsInStore, function (o) { return o.productName == req.body.productName })
       if(existingProduct== undefined){
           console.log('product not found')
           let newProduct = {
-              'productName': req.body.productName,
-              'stockAvailable': req.body.stockAvailable,
-              'soldQty': 0
+              'productName': req.body.productName
           }
           StoreProduct.findOneAndUpdate({
               storeId: req.body.storeId
@@ -31,7 +30,7 @@ try {
        if(existingProduct){
         let updatedStore = await StoreProduct.updateOne(
              {'products.productName': req.body.productName},
-             {$inc : {'products.$.stockAvailable': 1}}
+             {$inc : {'products.$.stockAvailable': quantity}}
            ).exec();
       }
       return res.send({
