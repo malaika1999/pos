@@ -22,7 +22,7 @@ try {
        if(existingProduct){
         let updatedStore = await StoreProduct.updateOne(
              {'products.productName': req.body.productName},
-             {$inc : {'products.$.stockAvailable': quantity*-1, 'products.$.soldQty': quantity}}
+             {$inc : {'products.$.stockAvailable': -quantity, 'products.$.soldQty': quantity}}
            ).exec();
       }
       return res.send({
