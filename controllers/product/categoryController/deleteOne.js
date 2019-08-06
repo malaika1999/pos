@@ -3,7 +3,7 @@ const Category = require("../../../models/product/category/index.js");
 const deleteCategory = async (req, res) => {
 try {
     let deletedCategory = await Category.findByIdAndDelete({
-        _id: req.params.bId
+        _id: req.params.cId
     }).exec();
     if (deletedCategory) {
         return res.send({

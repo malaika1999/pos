@@ -4,16 +4,14 @@ const Schema = mongoose.Schema
 const storeProductSchema = mongoose.Schema({
     storeId : {
         type: Schema.Types.ObjectId,
-        ref: 'store'
+        ref: 'store',
+        unique: true
     },
     products: [{
         productName: {
             type: Schema.Types.ObjectId,
             ref: 'product'
         },
-        // quantity:{
-        //     type: Number
-        // }
         stockAvailable: {
             type: Number
         },

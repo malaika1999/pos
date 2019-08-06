@@ -6,7 +6,7 @@ const oneCustomer = async (req, res) => {
     if (!customer) {
       return res.send({ message: "Customer not found" });
     } else if (customer) {
-      return res.send({ message: "Customer found" });
+      return res.send({ message: "Customer found", data: customer });
     }
   } catch (error) {
     return res.send({ message: error.message });

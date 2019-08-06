@@ -9,7 +9,7 @@ const createStoreProduct = async (req, res) => {
     let addedProduct = await storeProduct.save();
     res.status(200).send({
       status: true,
-      message: "Product added successfully",
+      message: "Store added successfully",
       data: addedProduct
     });
   } catch (error) {

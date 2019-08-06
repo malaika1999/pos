@@ -1,41 +1,54 @@
 const StoreProduct = require("../../models/storeProduct/index");
-const configdb = require("../../config/db");
-const mongoose = require("mongoose");
-var _ = require('lodash');
+var _ = require("lodash");
 
 let updateStock = async (req, res) => {
-try {
+  try {
     let updatedStock = await StoreProduct.findOne({
-        storeId: req.body.storeId
-       }).exec();
-       let quantity = req.body.quantity
-       let productsInStore = updatedStock.products;
-       
-      let existingProduct = _.find(productsInStore, function (o) { return o.productName == req.body.productName })
-     
-       if(existingProduct== undefined){
-          console.log('product not found')
-          return res.send({
-              message: "Product not found"
-          })
-      }
-       if(existingProduct){
-        let updatedStore = await StoreProduct.updateOne(
-             {'products.productName': req.body.productName},
-             {$inc : {'products.$.stockAvailable': -quantity, 'products.$.soldQty': quantity}}
-           ).exec();
-      }
-      return res.send({
-         status: true,
-         message: "quantity updated"
-     })        
-} catch (error) {
-    return res.send({
-        status: false,
-        message: error.message    
+      storeId: req.body.storeId
     })
-}
-};
+      .lean()
+      .exec();
+    let productsInStore = updatedStock.products;
+    let productsToBeStored = req.body.products;
+    let updatedStore;
+    for (let i = 0; i < productsToBeStored.length; i++) {
+      var productsAlreadyInStore = _.find(productsInStore, function(o) {
+        return o.productName == productsToBeStored[i].productName;
+      });
+      if (productsAlreadyInStore) {
+        console.log("product no." + [i + 1] + "found");
+        console.log(productsAlreadyInStore);
+        updatedStore = await StoreProduct.updateOne(
+          {
+            storeId: req.body.storeId,
+            "products.productName": productsToBeStored[i].productName
+          },
+          {
+            $inc: {
+              "products.$.stockAvailable": -1*productsToBeStored[i].quantity,
+              "products.$.soldQty": productsToBeStored[i].quantity
+            }
+          }
+        ).exec();
+      } else if (productsAlreadyInStore == undefined) {
+        console.log("product no." + [i + 1] + "not found");
+         res.send({
+          status: true,
+          message: "product not found in store"
+        });
+      }
+    }
+    return res.send({
+      status: true,
+      productsInStore: productsInStore
+    })
+  } catch (error) {
+    return res.send({
+      status: false,
+      message: error.message
+    });
+  }
+ };
 
 module.exports = {
   updateStock

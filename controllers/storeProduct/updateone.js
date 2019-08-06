@@ -11,8 +11,7 @@ const updateStoreProduct = async (req, res) => {
       }
     ).exec();
     if (
-      !req.body.storeId ||
-      !req.body.products
+      !req.body.storeId 
     ) {
       return res.status(400).send({
         status: false,

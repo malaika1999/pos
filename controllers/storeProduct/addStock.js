@@ -1,50 +1,61 @@
 const StoreProduct = require("../../models/storeProduct/index");
-const configdb = require("../../config/db");
-const mongoose = require("mongoose");
-var _ = require('lodash');
+var _ = require("lodash");
 
 let addStock = async (req, res) => {
-try {
+  try {
     let addedStock = await StoreProduct.findOne({
-        storeId: req.body.storeId
-       }).exec();
+      storeId: req.body.storeId
+    })
+      .lean()
+      .exec();
     let productsInStore = addedStock.products;
-    let quantity = req.body.quantity
-       
-      let existingProduct = _.find(productsInStore, function (o) { return o.productName == req.body.productName })
-      if(existingProduct== undefined){
-          console.log('product not found')
-          let newProduct = {
-              'productName': req.body.productName
-          }
-          StoreProduct.findOneAndUpdate({
-              storeId: req.body.storeId
+    let productsToBeStored = req.body.products;
+    let updatedStore;
+
+    for (let i = 0; i < productsToBeStored.length; i++) {
+      var productsAlreadyInStore = _.find(productsInStore, function(o) {
+        return o.productName == productsToBeStored[i].productName;
+      });
+      if (productsAlreadyInStore) {
+        console.log("product no." + [i + 1] + "found");
+        console.log(productsAlreadyInStore);
+        updatedStore = await StoreProduct.updateOne(
+          {
+            storeId: req.body.storeId,
+            "products.productName": productsToBeStored[i].productName
           },
-             {$push: {products: newProduct}}
-          ).exec()
-          console.log(newProduct)
-          return res.send({
-             data: newProduct
-         }) 
+          {
+            $inc: {
+              "products.$.stockAvailable": productsToBeStored[i].quantity
+            }
+          }
+        ).exec();
+      } else if (productsAlreadyInStore == undefined) {
+        console.log("product no." + [i + 1] + "not found");
+        let newProduct = {
+          productName: productsToBeStored[i].productName,
+          stockAvailable: productsToBeStored[i].quantity,
+          soldQty: 0
+        };
+        StoreProduct.findOneAndUpdate(
+          {
+            storeId: req.body.storeId
+          },
+          { $push: { products: newProduct } }
+        ).exec();
+        console.log(newProduct);
       }
-       if(existingProduct){
-        let updatedStore = await StoreProduct.updateOne(
-             {'products.productName': req.body.productName},
-             {$inc : {'products.$.stockAvailable': quantity}}
-           ).exec();
-      }
-      return res.send({
-         status: true,
-         message: "quantity updated"
-     })
-                   
-} catch (error) {
-        return res.send({
-            status: false,
-            message: error.message
-        })
     }
-  
+    return res.send({
+      status: true,
+      productsInStore: productsInStore
+    });
+  } catch (error) {
+    return res.send({
+      status: false,
+      message: error.message
+    });
+  }
 };
 
 module.exports = {
