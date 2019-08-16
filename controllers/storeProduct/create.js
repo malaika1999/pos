@@ -7,7 +7,7 @@ const createStoreProduct = async (req, res) => {
       storeId: req.body.storeId
     });
     let addedProduct = await storeProduct.save();
-    res.status(200).send({
+    res.status(201).send({
       status: true,
       message: "Store added successfully",
       data: addedProduct

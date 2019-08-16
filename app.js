@@ -22,6 +22,12 @@ const customerRoute = require("./routes/customer/index");
 const storeRoute = require("./routes/store/index");
 //******Store Product Routes *****/
 const storeProductRoute = require('./routes/storeProduct/index')
+//******Sales Order Routes *******/
+const salesOrderRoute = require('./routes/sales/index')
+//******Sales Return Routes *****/
+const salesReturnRoute = require('./routes/return/index')
+//*******Waste Routes *******/
+const wasteProductRoute = require('./routes/waste/index')
 
 // Configuring database
 var configDb = require("./config/db");
@@ -97,6 +103,13 @@ app.use("/api/customer", customerRoute);
 app.use("/api/store", storeRoute);
 //Store Product Routes
 app.use('/api/storeProduct', storeProductRoute)
+//Sales Order Routes
+app.use('/api/sales', salesOrderRoute)
+//Sales Return Routes
+app.use('/api/return', salesReturnRoute)
+//Waste Product Routes
+app.use('/api/waste', wasteProductRoute)
+
 
 app.listen(port);
 console.log("The magic happens on port " + port);

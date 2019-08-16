@@ -57,6 +57,10 @@ var employeeSchema = new mongoose.Schema({
     role: {
         type: String
     },
+    employeeCode:{
+        type: String,
+        required: true
+    },
     bankAccNo: {
         type: String,
         unique: true

@@ -16,6 +16,7 @@ const updateEmployee = async (req, res) => {
         postalCode: req.body.postalCode,
         dateOfBirth: req.body.dateOfBirth,
         role: req.body.role,
+        employeeCode: req.body.employeeCode,
         bankAccNo: req.body.bankAccNo,
         perHourRate: req.body.perHourRate,
         workingHoursPerWeek: req.body.workingHoursPerWeek,
@@ -32,7 +33,8 @@ const updateEmployee = async (req, res) => {
         !req.body.city ||
         !req.body.country ||
         !req.body.state ||
-        !req.body.NIC
+        !req.body.NIC ||
+        !req.body.employeeCode
     ) {
       return res.status(400).send({
         status: false,
