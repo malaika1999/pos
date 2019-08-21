@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 var uniqueValidator = require('mongoose-unique-validator');
-//const Schema = mongoose.Schema;
 const MongoURI = require('../../config/db')
 var autoIncrement = require('mongoose-auto-increment');
 
@@ -63,6 +62,5 @@ customerSchema.plugin(autoIncrement.plugin, {
     incrementBy: 1
 })
 
-
-mongoose.model('customer', customerSchema);
-module.exports = mongoose.model('customer');
+//mongoose.model('customer', customerSchema);
+module.exports = mongoose.model('customer', customerSchema);

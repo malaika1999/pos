@@ -1,5 +1,5 @@
 const Sales = require("../../models/sales/index.js");
-const Customer = require("../../models/Customer/index");
+const Customer = require("../../models/customer/index");
 
 const addPoints = async (req, res) => {
   try {

@@ -29,6 +29,7 @@ const salesReturnRoute = require('./routes/return/index')
 //*******Waste Routes *******/
 const wasteProductRoute = require('./routes/waste/index')
 
+
 // Configuring database
 var configDb = require("./config/db");
 const mongoose = require("mongoose");

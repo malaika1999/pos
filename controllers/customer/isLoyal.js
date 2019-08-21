@@ -1,4 +1,4 @@
-const Customer = require('../../models/Customer/index')
+const Customer = require('../../models/customer/index')
 
 const isLoyalCustomer = async (req,res) => {
 try {
