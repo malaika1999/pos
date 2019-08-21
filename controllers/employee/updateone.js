@@ -10,7 +10,7 @@ const updateEmployee = async (req, res) => {
         NIC: req.body.NIC,
         contactNo: req.body.contactNo,
         address: req.body.address,
-        city:  req.body.city,
+        city: req.body.city,
         country: req.body.country,
         state: req.body.state,
         postalCode: req.body.postalCode,
@@ -26,15 +26,15 @@ const updateEmployee = async (req, res) => {
       }
     ).exec();
     if (
-        !req.body.name ||
-        !req.body.email ||
-        !req.body.contactNo ||
-        !req.body.address ||
-        !req.body.city ||
-        !req.body.country ||
-        !req.body.state ||
-        !req.body.NIC ||
-        !req.body.employeeCode
+      !req.body.name ||
+      !req.body.email ||
+      !req.body.contactNo ||
+      !req.body.address ||
+      !req.body.city ||
+      !req.body.country ||
+      !req.body.state ||
+      !req.body.NIC ||
+      !req.body.employeeCode
     ) {
       return res.status(400).send({
         status: false,
@@ -47,11 +47,11 @@ const updateEmployee = async (req, res) => {
       data: updatedEmployee
     });
   } catch (error) {
-      return res.status(500).send({
-        status: false,
-        message: error.message
-      });
-    }
+    return res.status(500).send({
+      status: false,
+      message: error.message
+    });
+  }
 };
 module.exports = {
   updateEmployee

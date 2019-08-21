@@ -1,4 +1,4 @@
-const Return = require('../../models/return/index')
+const Return = require("../../models/return/index");
 
 const allReturns = async (req, res) => {
   try {

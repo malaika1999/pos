@@ -8,9 +8,7 @@ const updateBrand = async (req, res) => {
         name: req.body.name
       }
     ).exec();
-    if (
-        !req.body.name 
-    ) {
+    if (!req.body.name) {
       return res.status(400).send({
         status: false,
         message: "Its mandatory to fill all required fields"
@@ -22,11 +20,11 @@ const updateBrand = async (req, res) => {
       data: updatedBrand
     });
   } catch (error) {
-      return res.status(500).send({
-        status: false,
-        message: error.message
-      });
-    }
+    return res.status(500).send({
+      status: false,
+      message: error.message
+    });
+  }
 };
 module.exports = {
   updateBrand

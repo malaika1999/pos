@@ -24,11 +24,7 @@ const updateProduct = async (req, res) => {
         image: req.body.image
       }
     ).exec();
-    if (
-        !req.body.name ||
-        !req.body.quantityAtHand ||
-        !req.body.sku
-    ) {
+    if (!req.body.name || !req.body.quantityAtHand || !req.body.sku) {
       return res.status(400).send({
         status: false,
         message: "Its mandatory to fill all required fields"
@@ -40,11 +36,11 @@ const updateProduct = async (req, res) => {
       data: updatedProduct
     });
   } catch (error) {
-      return res.status(500).send({
-        status: false,
-        message: error.message
-      });
-    }
+    return res.status(500).send({
+      status: false,
+      message: error.message
+    });
+  }
 };
 module.exports = {
   updateProduct

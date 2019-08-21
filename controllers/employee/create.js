@@ -37,12 +37,12 @@ const createEmployee = async (req, res) => {
         status: false,
         message: "Its mandatory to fill all required fields"
       });
-      let createdEmployee = await employee.save();
-      res.status(201).send({
-        status: true,
-        message: "Employee created successfully",
-        data: createdEmployee
-      });
+    let createdEmployee = await employee.save();
+    res.status(201).send({
+      status: true,
+      message: "Employee created successfully",
+      data: createdEmployee
+    });
   } catch (error) {
     res.status(500).send({
       status: false,

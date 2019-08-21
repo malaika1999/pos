@@ -23,12 +23,12 @@ const createCustomer = async (req, res) => {
       !req.body.city ||
       !req.body.country ||
       !req.body.state
-    ){
+    ) {
       return res.status(400).send({
         status: false,
         message: "Its mandatory to fill all required fields"
       });
-    }  
+    }
     let createdCustomer = await customer.save();
     res.status(201).send({
       status: true,

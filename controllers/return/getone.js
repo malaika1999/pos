@@ -1,4 +1,4 @@
-const Return = require('../../models/return/index')
+const Return = require("../../models/return/index");
 
 const oneReturnOrder = async (req, res) => {
   try {
@@ -6,7 +6,9 @@ const oneReturnOrder = async (req, res) => {
     if (!returnOrder) {
       return res.status(404).send({ message: "Return Order not found" });
     } else if (returnOrder) {
-      return res.status(200).send({ message: "Return Order found", data: returnOrder });
+      return res
+        .status(200)
+        .send({ message: "Return Order found", data: returnOrder });
     }
   } catch (error) {
     return res.status(500).send({ message: error.message });

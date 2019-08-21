@@ -1,33 +1,30 @@
 const Category = require("../../../models/product/category/index.js");
 
 const deleteCategory = async (req, res) => {
-try {
+  try {
     let deletedCategory = await Category.findByIdAndDelete({
-        _id: req.params.cId
+      _id: req.params.cId
     }).exec();
     if (deletedCategory) {
-        return res.send({
-            status: true,
-            message: "category deleted successfully",
-            data: deletedCategory
-            })
+      return res.send({
+        status: true,
+        message: "category deleted successfully",
+        data: deletedCategory
+      });
+    } else {
+      return res.send({
+        status: false,
+        message: "category not found with id" + req.params.cId
+      });
     }
-    else {
-        return res.send({
-            status: false,
-            message: "category not found with id" + req.params.cId,
-        })
-    }
-
-} catch (error) {
+  } catch (error) {
     return res.status(500).send({
-        status:false,
-        message: error.message
-    })
-}
-    
-}
+      status: false,
+      message: error.message
+    });
+  }
+};
 
 module.exports = {
-    deleteCategory
-}
+  deleteCategory
+};

@@ -7,7 +7,7 @@ const returnSchema = mongoose.Schema({
     ref: "salesOrder"
   },
   status: {
-      type: String
+    type: String
   },
   products: [
     {

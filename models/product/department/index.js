@@ -1,18 +1,18 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 //Adding Unique Validator
 // var uniqueValidator = require('mongoose-unique-validator');
 const Schema = mongoose.Schema;
 
 //Defining Brand Schema
 let departmentSchema = new Schema({
-    name: {
-        type: String,
-        required: true,
-        minlength: 3,
-        maxlength: 100,
-        unique: true
-    }
-})
+  name: {
+    type: String,
+    required: true,
+    minlength: 3,
+    maxlength: 100,
+    unique: true
+  }
+});
 
 //Exporting the Model
 
@@ -25,5 +25,7 @@ let departmentSchema = new Schema({
 //Using Unique Validator Plugin
 //brandSchema.plugin(uniqueValidator);
 module.exports = mongoose.model(
-    'department', departmentSchema, 'productdepartments'
-)
+  "department",
+  departmentSchema,
+  "productdepartments"
+);
