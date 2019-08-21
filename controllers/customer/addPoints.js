@@ -7,40 +7,37 @@ const addPoints = async (req, res) => {
       _id: req.body.customerId,
       isLoyal: true
     }).exec();
-    if(!customer){
-        console.log("customer not found")
-    }
-    else{
+    if (!customer) {
+      console.log("customer not found");
+    } else {
       let amount = req.body.amount;
       let bill = await Sales.findOne({
-          Customer: req.body.customerId
-        }).exec();
-      
-        let totalBill = bill.netAmount;
-      
-        var something = await Customer.updateOne(
-          {
-            _id: req.body.customerId
-          },
-          {
-            $inc: {
-              points: parseInt(totalBill / amount)
-            }
+        Customer: req.body.customerId
+      }).exec();
+
+      let totalBill = bill.netAmount;
+
+      var something = await Customer.updateOne(
+        {
+          _id: req.body.customerId
+        },
+        {
+          $inc: {
+            points: parseInt(totalBill / amount)
           }
-        ).exec();
-        res.send({
-          customer: customer,
-          totalBill: totalBill
-        });
-    }  
+        }
+      ).exec();
+      res.send({
+        customer: customer,
+        totalBill: totalBill
+      });
+    }
   } catch (error) {
     res.status(500).send({
       status: false,
       message: error.message
     });
   }
-  
-  
 };
 
 module.exports = {

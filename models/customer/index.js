@@ -49,6 +49,9 @@ var customerSchema = new mongoose.Schema({
     cardNumber: {
         type: String,
         required: true
+    },
+    isLoyal: {
+        type: Boolean
     }
 })
 
