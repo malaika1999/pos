@@ -8,7 +8,8 @@ const wasteSchema = mongoose.Schema({
   },
   storeId: {
     type: Schema.Types.ObjectId,
-    ref: "store"
+    ref: "store",
+    unique:true
   },
   products: [
     {

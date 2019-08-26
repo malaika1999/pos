@@ -19,7 +19,7 @@ const brandRoute = require("./routes/product/brand/index");
 const categoryRoute = require("./routes/product/category/index");
 const departmentRoute = require("./routes/product/department/index");
 // ***** Employee Routes *******
-// var employeeRoute  = require('./routes/employee/index');
+var employeeRoute  = require('./routes/employee/index');
 //***** Customer Routes ****
 const customerRoute = require("./routes/customer/index");
 //*****Store Routes *****/
@@ -32,7 +32,7 @@ const salesOrderRoute = require("./routes/sales/index");
 const salesReturnRoute = require("./routes/return/index");
 //*******Waste Routes *******/
 const wasteProductRoute = require("./routes/waste/index");
-const authRoute = require("./routes/employee/index")
+// const authRoute = require("./routes/employee/index")
 
 
 
@@ -114,7 +114,7 @@ app.use("/api/brand", brandRoute);
 app.use("/api/category", categoryRoute);
 app.use("/api/department", departmentRoute);
 //Employee Routes
-// app.use("/api/employee", employeeRoute);
+app.use("/api/employee", employeeRoute);
 //Customer Routes
 app.use("/api/customer", customerRoute);
 //Store Routes
@@ -127,7 +127,7 @@ app.use("/api/sales", salesOrderRoute);
 app.use("/api/return", salesReturnRoute);
 //Waste Product Routes
 app.use("/api/waste", wasteProductRoute);
-app.use("/auth",authRoute)
+// app.use("/auth",authRoute)
 
 
 app.listen(port);

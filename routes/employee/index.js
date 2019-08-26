@@ -3,13 +3,13 @@ var router = express.Router();
 var passport = require('passport');
 
 router.post('/signup', passport.authenticate('local-signup', {
-    successRedirect : '/auth/profile',
-    failureRedirect : 'auth/signup'
+    successRedirect : 'profile',
+    failureRedirect : 'signup'
 }));
 
 router.post('/login', passport.authenticate('local-login', {
-    successRedirect : '/auth/profile',
-    failureRedirect : 'auth/login'
+    successRedirect : 'profile',
+    failureRedirect : 'login'
 }));
 router.get('/profile', isLoggedIn, (req, res) => {
     res.status(200).json(req.user);
