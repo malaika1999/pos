@@ -3,6 +3,10 @@ var bodyParser = require("body-parser");
 var multer = require("multer");
 const ejs = require("ejs");
 const path = require("path");
+var passport = require('passport')
+var morgan = require('morgan')
+var cookieParser = require('cookie-parser')
+var session = require('express-session')
 
 //Express app
 var app = express();
@@ -15,19 +19,21 @@ const brandRoute = require("./routes/product/brand/index");
 const categoryRoute = require("./routes/product/category/index");
 const departmentRoute = require("./routes/product/department/index");
 // ***** Employee Routes *******
-const employeeRoute = require("./routes/employee/index");
+// var employeeRoute  = require('./routes/employee/index');
 //***** Customer Routes ****
 const customerRoute = require("./routes/customer/index");
 //*****Store Routes *****/
 const storeRoute = require("./routes/store/index");
 //******Store Product Routes *****/
-const storeProductRoute = require('./routes/storeProduct/index')
+const storeProductRoute = require("./routes/storeProduct/index");
 //******Sales Order Routes *******/
-const salesOrderRoute = require('./routes/sales/index')
+const salesOrderRoute = require("./routes/sales/index");
 //******Sales Return Routes *****/
-const salesReturnRoute = require('./routes/return/index')
+const salesReturnRoute = require("./routes/return/index");
 //*******Waste Routes *******/
-const wasteProductRoute = require('./routes/waste/index')
+const wasteProductRoute = require("./routes/waste/index");
+const authRoute = require("./routes/employee/index")
+
 
 
 // Configuring database
@@ -46,11 +52,22 @@ mongoose
     console.log("couldn't connect to database", err);
     process.exit();
   });
-
+  require('./config/passport')(passport);
+  app.use(morgan('dev')); // log every request to the console
+  app.use(cookieParser()); // read cookies (needed for auth) 
+ 
 // parse requests of content-type - application/json
 app.use(bodyParser.json());
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(session({
+  secret: 'secret',
+  resave: true,
+  saveUninitialized: true
+}))
+app.use(passport.initialize())
+app.use(passport.session()) // persistent login sessions
 
 //*** uploading file/image *****/
 //Set Storage Engine
@@ -97,19 +114,20 @@ app.use("/api/brand", brandRoute);
 app.use("/api/category", categoryRoute);
 app.use("/api/department", departmentRoute);
 //Employee Routes
-app.use("/api/employee", employeeRoute);
+// app.use("/api/employee", employeeRoute);
 //Customer Routes
 app.use("/api/customer", customerRoute);
 //Store Routes
 app.use("/api/store", storeRoute);
 //Store Product Routes
-app.use('/api/storeProduct', storeProductRoute)
+app.use("/api/storeProduct", storeProductRoute);
 //Sales Order Routes
-app.use('/api/sales', salesOrderRoute)
+app.use("/api/sales", salesOrderRoute);
 //Sales Return Routes
-app.use('/api/return', salesReturnRoute)
+app.use("/api/return", salesReturnRoute);
 //Waste Product Routes
-app.use('/api/waste', wasteProductRoute)
+app.use("/api/waste", wasteProductRoute);
+app.use("/auth",authRoute)
 
 
 app.listen(port);

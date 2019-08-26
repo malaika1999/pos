@@ -22,7 +22,8 @@ const updateEmployee = async (req, res) => {
         workingHoursPerWeek: req.body.workingHoursPerWeek,
         extraHourRate: req.body.extraHourRate,
         image: req.body.image,
-        joiningDate: req.body.joiningDate
+        joiningDate: req.body.joiningDate,
+        passCode: req.body.passCode
       }
     ).exec();
     if (

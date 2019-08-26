@@ -6,17 +6,22 @@ const getAllController = require("../../controllers/customer/getall");
 const getOneController = require("../../controllers/customer/getone");
 const updateOneController = require("../../controllers/customer/updateone");
 const deleteOneController = require("../../controllers/customer/deleteone");
-const isLoyalController = require("../../controllers/customer/isLoyal");
 const addPointsController = require("../../controllers/customer/addPoints");
 const redeemPointsController = require("../../controllers/customer/redeemPoints");
 
-router.post("/create", createController.createCustomer);
-router.get("/getall/", getAllController.allCustomers);
-router.get("/getone/:cusId", getOneController.oneCustomer);
-router.put("/update/:cusId", updateOneController.updateCustomer);
-router.delete("/delete/:cusId", deleteOneController.deleteCustomer);
-router.put("/isLoyal/", isLoyalController.isLoyalCustomer);
-router.put("/addPoints/", addPointsController.addPoints);
-router.put("/redeem/", redeemPointsController.redeemPoints);
+router.post("/create",isLoggedIn,createController.createCustomer);
+router.get("/getall/",isLoggedIn, getAllController.allCustomers);
+router.get("/getone/:cusId",isLoggedIn, getOneController.oneCustomer);
+router.put("/update/:cusId",isLoggedIn, updateOneController.updateCustomer);
+router.delete("/delete/:cusId",isLoggedIn, deleteOneController.deleteCustomer);
+router.put("/addPoints/",isLoggedIn, addPointsController.addPoints);
+router.put("/redeem/",isLoggedIn, redeemPointsController.redeemPoints);
 
 module.exports = router;
+function isLoggedIn(req, res, next) {
+    if (req.isAuthenticated())
+        return next();
+    res.status(400).json({
+        'message': 'access denied'
+    });
+}

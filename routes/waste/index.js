@@ -8,11 +8,18 @@ const updateOneController = require("../../controllers/waste/updateone");
 const deleteOneController = require("../../controllers/waste/deleteone");
 const updateStockController = require("../../controllers/waste/updateStock");
 
-router.post("/create", createController.addWasteStore);
-router.get("/getall", getAllController.allWasteStores);
-router.get("/getone/:wId", getOneController.oneWasteStore);
-router.put("/update/:wId", updateOneController.updateWasteStore);
-router.delete("/delete/:wId", deleteOneController.deleteWasteStore);
-router.put("/updateStock/", updateStockController.updateStock);
+router.post("/create",isLoggedIn, createController.addWasteStore);
+router.get("/getall",isLoggedIn, getAllController.allWasteStores);
+router.get("/getone/:wId",isLoggedIn, getOneController.oneWasteStore);
+router.put("/update/:wId",isLoggedIn, updateOneController.updateWasteStore);
+router.delete("/delete/:wId",isLoggedIn, deleteOneController.deleteWasteStore);
+router.put("/updateStock/",isLoggedIn, updateStockController.updateStock);
 
 module.exports = router;
+function isLoggedIn(req, res, next) {
+    if (req.isAuthenticated())
+        return next();
+    res.status(400).json({
+        'message': 'access denied'
+    });
+}

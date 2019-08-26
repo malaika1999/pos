@@ -4,8 +4,7 @@ const Customer = require("../../models/customer/index");
 const addPoints = async (req, res) => {
   try {
     let customer = await Customer.findOne({
-      _id: req.body.customerId,
-      isLoyal: true
+      _id: req.body.customerId
     }).exec();
     if (!customer) {
       console.log("customer not found");

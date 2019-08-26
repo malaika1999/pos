@@ -1,4 +1,4 @@
 //Define MongoDB URL here
 module.exports = {
-  url: "mongodb://malaika123:malaika123@ds113906.mlab.com:13906/malaikatest"
+  url: "mongodb+srv://pakistan1947:pakistan1947@cluster0-rdhvv.mongodb.net/npos?retryWrites=true&w=majority"
 };

@@ -7,10 +7,17 @@ const getOneController = require("../../controllers/sales/getone");
 const updateOneController = require("../../controllers/sales/updateone");
 const deleteOneController = require("../../controllers/sales/deleteone");
 
-router.post("/create", createController.createsalesOrder);
-router.get("/getall/", getAllController.allSalesOrders);
-router.get("/getone/:salesId", getOneController.oneSalesOrder);
-router.put("/update/:salesId", updateOneController.updateSalesOrder);
-router.delete("/delete/:salesId", deleteOneController.deleteSalesOrder);
+router.post("/create",isLoggedIn, createController.createsalesOrder);
+router.get("/getall/",isLoggedIn, getAllController.allSalesOrders);
+router.get("/getone/:salesId", isLoggedIn, getOneController.oneSalesOrder);
+router.put("/update/:salesId",isLoggedIn, updateOneController.updateSalesOrder);
+router.delete("/delete/:salesId",isLoggedIn, deleteOneController.deleteSalesOrder);
 
 module.exports = router;
+function isLoggedIn(req, res, next) {
+    if (req.isAuthenticated())
+        return next();
+    res.status(400).json({
+        'message': 'access denied'
+    });
+}

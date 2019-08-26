@@ -4,8 +4,7 @@ const Sales = require("../../models/sales/index");
 const redeemPoints = async (req, res) => {
   try {
     let customer = await Customer.findOne({
-      _id: req.body.customerId,
-      isLoyal: true
+      _id: req.body.customerId
     }).exec();
     if (!customer) {
       res.send("customer not found");
@@ -37,6 +36,10 @@ const redeemPoints = async (req, res) => {
               points: parseInt(-(totalBill / amount))
             }
           }
+        );
+        await Sales.updateOne(
+          { Customer: req.body.customerId, netAmount: { $lt: 0 } },
+          { $set: { netAmount: 0 } }
         );
       } else if (points * amount < totalBill) {
         await Customer.updateOne(

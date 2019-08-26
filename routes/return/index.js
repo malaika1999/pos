@@ -9,12 +9,19 @@ const deleteOneController = require("../../controllers/return/delete");
 const changeStatusController = require("../../controllers/return/changeStatus");
 const updateInventoryController = require("../../controllers/return/updateInventory");
 
-router.post("/create", createController.createReturn);
-router.get("/getall/", getAllController.allReturns);
-router.get("/getone/:rId", getOneController.oneReturnOrder);
-router.put("/update/:rId", updateOneController.updateReturn);
-router.delete("/delete/:rId", deleteOneController.deleteReturn);
-router.put("/changeStatus/", changeStatusController.changeStatus);
-router.put("/updateInventory/", updateInventoryController.updateInventory);
+router.post("/create",isLoggedIn, createController.createReturn);
+router.get("/getall/",isLoggedIn, getAllController.allReturns);
+router.get("/getone/:rId",isLoggedIn, getOneController.oneReturnOrder);
+router.put("/update/:rId",isLoggedIn, updateOneController.updateReturn);
+router.delete("/delete/:rId",isLoggedIn, deleteOneController.deleteReturn);
+router.put("/changeStatus/",isLoggedIn, changeStatusController.changeStatus);
+router.put("/updateInventory/",isLoggedIn, updateInventoryController.updateInventory);
 
 module.exports = router;
+function isLoggedIn(req, res, next) {
+    if (req.isAuthenticated())
+        return next();
+    res.status(400).json({
+        'message': 'access denied'
+    });
+}
